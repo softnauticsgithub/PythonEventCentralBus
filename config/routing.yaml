@@ -1,0 +1,31 @@
+routes:
+  - name: modbus_to_ble_gpio
+    match:
+      topic: "device/modbus/out"
+    targets:
+      - topic: "device/ble/in"
+      - topic: "device/gpio/in"
+
+  - name: ble_to_api
+    match:
+      topic: "device/ble/out"
+    targets:
+      - topic: "device/api/in"
+
+  - name: broadcast_alerts
+    match:
+      topic: "device/+/out"
+      payload:
+        type: "alert"
+    targets:
+      - topic: "device/ble/in"
+      - topic: "device/gpio/in"
+      - topic: "device/api/in"
+
+  - name: modbus_write_command
+    match:
+      topic: "device/api/out"
+      payload:
+        command: "write_modbus"
+    targets:
+      - topic: "device/modbus/in"
