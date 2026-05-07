@@ -1,31 +1,33 @@
 routes:
-  - name: modbus_to_ble_gpio
+  - name: modbus_to_engine
     match:
       topic: "device/modbus/out"
     targets:
-      - topic: "device/ble/in"
-      - topic: "device/gpio/in"
+      topic: "device/ble/in"
+      topic: "device/gpio/in"
+      topic: "device/api/in"
 
-  - name: ble_to_api
+  - name: BLE_to_engine
     match:
-      topic: "device/ble/out"
+      topic: "device/BLE/out"
     targets:
-      - topic: "device/api/in"
+      topic: "device/modbus/in"
+      topic: "device/gpio/in"
+      topic: "device/api/in"
 
-  - name: broadcast_alerts
-    match:
-      topic: "device/+/out"
-      payload:
-        type: "alert"
+  - name: GPIO_to_engine
+    match:      
+      topic: "device/GPIO/out"
     targets:
-      - topic: "device/ble/in"
-      - topic: "device/gpio/in"
-      - topic: "device/api/in"
-
-  - name: modbus_write_command
+      topic: "device/modbus/in"
+      topic: "device/ble/in"
+      topic: "device/api/in"
+  
+  - name: API_to_engine
     match:
-      topic: "device/api/out"
-      payload:
-        command: "write_modbus"
+      topic: "device/API/out"
     targets:
-      - topic: "device/modbus/in"
+      topic: "device/modbus/in"
+      topic: "device/ble/in"
+      topic: "device/gpio/in"
+        
